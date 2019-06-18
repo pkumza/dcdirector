@@ -9,7 +9,7 @@ import (
 
 // Vertex is a node that represents a data center
 type Vertex struct {
-	Name      string   // name of data center, should be unique, should not contains "->" or ";" or "*"
+	Name      string   // name of data center, should be unique, should not contains "->", "!>", ";" or "*"
 	Outdegree float64  // how many clients deployed in this data center
 	Indegree  float64  // how many servers deployed in this data center
 	Neighbors []string // data centers' name that close to current data center.
@@ -37,7 +37,8 @@ type DCDirector interface {
 
 // Validate makes sure that vertex is valid
 func (v Vertex) Validate() error {
-	if strings.Contains(v.Name, "->") || strings.Contains(v.Name, ";") || strings.Contains(v.Name, "*") {
+	if strings.Contains(v.Name, "->") || strings.Contains(v.Name, "!>") ||
+		strings.Contains(v.Name, ";") || strings.Contains(v.Name, "*") {
 		return fmt.Errorf(`vertex name %q should not contains "->" or ";" or "*"`, v.Name)
 	}
 	if v.Outdegree < 0 {
